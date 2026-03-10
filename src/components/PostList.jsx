@@ -2,11 +2,12 @@ import { useState } from "react";
 import PostCard from "./PostCard";
 
 function PostList({ posts, favorites, onToggleFavorite }) {
+
   const [search, setSearch] = useState("");
 
-  // กรองโพสต์ตาม search
+  // กรองโพสต์ตามคำค้นหา
   const filtered = posts.filter((post) =>
-    post.title.toLowerCase().includes(search.toLowerCase()),
+    post.title.toLowerCase().includes(search.toLowerCase())
   );
 
   return (

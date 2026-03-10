@@ -2,8 +2,9 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import PostList from "./components/PostList";
 import UserCard from "./components/UserCard";
+import AddPostForm from "./components/AddPostForm";
 
-const POSTS = [
+const INITIAL_POSTS = [
   {
     id: 1,
     title: "React คืออะไร?",
@@ -33,44 +34,54 @@ const USERS = [
 ];
 
 function App() {
+  const [posts, setPosts] = useState(INITIAL_POSTS);
+  const [favorites, setFavorites] = useState([]); // เก็บ id ที่ถูกใจ
 
-  // state เก็บ favorite post
-  const [favorites, setFavorites] = useState([]);
+  // Toggle ถูกใจ/ยกเลิก
+  function handleToggleFavorite(postId) {
+    setFavorites(
+      (prev) =>
+        prev.includes(postId)
+          ? prev.filter((id) => id !== postId) // ลบออก
+          : [...prev, postId] // เพิ่มเข้า
+    );
+  }
 
-  // function toggle favorite
-  const toggleFavorite = (postId) => {
-    if (favorites.includes(postId)) {
-      setFavorites(favorites.filter((id) => id !== postId));
-    } else {
-      setFavorites([...favorites, postId]);
-    }
-  };
+  // เพิ่มโพสต์ใหม่
+  function handleAddPost({ title, body }) {
+    const newPost = {
+      id: Date.now(), // ใช้ timestamp เป็น id ชั่วคราว
+      title,
+      body,
+    };
+    setPosts((prev) => [newPost, ...prev]); // เพิ่มไว้ด้านบน
+  }
 
   return (
-    <div>
-      {/* ส่งจำนวน favorite ไป Navbar */}
-      <Navbar favoriteCount={favorites.length} />
+  <div>
+    <Navbar favoriteCount={favorites.length} />
 
-      <div
-        style={{
-          maxWidth: "900px",
-          margin: "2rem auto",
-          padding: "0 1rem",
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: "2rem",
-        }}
-      >
-        {/* คอลัมน์ซ้าย: โพสต์ */}
+    <div
+      style={{
+        maxWidth: "900px",
+        margin: "2rem auto",
+        padding: "0 1rem",
+        display: "grid",
+        gridTemplateColumns: "2fr 1fr",
+        gap: "2rem",
+      }}
+    >
+        {/* คอลัมน์ซ้าย */}
         <div>
+          <AddPostForm onAddPost={handleAddPost} />
           <PostList
-            posts={POSTS}
+            posts={posts}
             favorites={favorites}
-            onToggleFavorite={toggleFavorite}
+            onToggleFavorite={handleToggleFavorite}
           />
         </div>
 
-        {/* คอลัมน์ขวา: สมาชิก */}
+        {/* คอลัมน์ขวา */}
         <div>
           <h2
             style={{
