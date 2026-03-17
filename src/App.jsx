@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import PostList from "./components/PostList";
 import UserList from "./components/UserList";
+import AddPostForm from "./components/AddPostForm";
 
 function App() {
   const [favorites, setFavorites] = useState([]);
@@ -10,7 +11,7 @@ function App() {
     setFavorites((prev) =>
       prev.includes(postId)
         ? prev.filter((id) => id !== postId)
-        : [...prev, postId]
+        : [...prev, postId],
     );
   }
 
@@ -28,15 +29,14 @@ function App() {
           gap: "2rem",
         }}
       >
-        {/* ซ้าย */}
         <div>
+          <AddPostForm onAddPost={() => {}} /> {/* จะเชื่อมใน wk14 */}
           <PostList
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
           />
         </div>
 
-        {/* ขวา */}
         <div>
           <UserList />
         </div>
