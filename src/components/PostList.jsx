@@ -15,6 +15,7 @@ function PostList({ favorites, onToggleFavorite }) {
         setError(null);
         const res = await fetch("https://jsonplaceholder.typicode.com/posts");
         if (!res.ok) throw new Error("ดึงข้อมูลไม่สำเร็จ");
+
         const data = await res.json();
         setPosts(data.slice(0, 20)); // เอาแค่ 20 รายการแรก
       } catch (err) {
@@ -23,6 +24,7 @@ function PostList({ favorites, onToggleFavorite }) {
         setLoading(false);
       }
     }
+
     fetchPosts();
   }, []); // [] = ทำครั้งเดียวตอน component mount
 
