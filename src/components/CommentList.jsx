@@ -6,10 +6,17 @@ function CommentList({ postId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+
   useEffect(() => {
     async function fetchComments() {
       try {
         setLoading(true);
+        setError(null);
+
+        await delay(200);
+
         const res = await fetch(
           `https://jsonplaceholder.typicode.com/posts/${postId}/comments`,
         );
@@ -27,6 +34,7 @@ function CommentList({ postId }) {
 
   if (loading)
     return <p style={{ color: "#718096" }}>กำลังโหลดความคิดเห็น...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p style={{ color: "#c53030" }}>{error}</p>;
 
   return (
